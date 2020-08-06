@@ -1,4 +1,162 @@
 "use strict";
 
-console.log("Hello World from main.js! \nChange this message, and make sure it changes in the browser \nto verify that you're working in the right files.");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Main = /*#__PURE__*/function () {
+  function Main() {
+    var _this = this;
+
+    _classCallCheck(this, Main);
+
+    _defineProperty(this, "reformatDate", function (dateString) {
+      if (dateString == null || dateString == "") {
+        return null;
+      }
+
+      var matched = dateString.match(/^(0?[1-9]|1[0-2])\W(3[01]|[12][0-9]|0?[1-9])\W?(\d*?)$/);
+      var year = matched[3];
+
+      if (year.length == 0) {
+        year = new Date().getFullYear();
+      } else if (year.length == 2) {
+        year = "20".concat(year);
+      } else if (year.length != 4) {
+        return null;
+      }
+
+      var testDate = new Date(year, parseInt(matched[1]) - 1, matched[2]);
+
+      if (testDate == nuull) {
+        return null;
+      }
+
+      var mm = matched[1];
+
+      if (mm.length == 1) {
+        mm = "0".concat(mm);
+      }
+
+      var dd = matched[2];
+
+      if (dd.length == 1) {
+        dd = "0".concat(dd);
+      }
+
+      var formattedDate = "".concat(year).concat(mm).concat(dd);
+      return formattedDate;
+    });
+
+    _defineProperty(this, "handleSearch", function (event) {
+      event.preventDefault();
+      var queryEl = document.querySelector('[name="query"]');
+      var startDateEl = document.querySelector('[name="startDate"]');
+      var endDateEl = document.querySelector('[name="endDate"]');
+      var queryTerm = queryEl.value;
+      var startDateOrig = startDateEl.value;
+
+      var startDate = _this.reformatDate(startDateOrig);
+
+      var endDateOrig = endDateEl.value;
+
+      var endDate = _this.reformatDate(endDateOrig);
+
+      var selectOptionsEl = document.querySelector('[name="sort"]');
+      var selectOptionsOrig = selectOptionsEl.value;
+      var searchOptions = {};
+
+      if (startDate != null) {
+        searchOptions.begin_date = startDate;
+      }
+
+      if (endDate != null) {
+        searchOptions.end_date = endDate;
+      }
+
+      searchOptions.sort = selectOptionsOrig;
+      var api = new NytApi();
+      api.search(queryTerm, searchOptions);
+    });
+
+    // what's the flow here?
+    // 1. setup form events listener(s) that will make the actual api calls
+    // 2. setup callback functions to process api responses
+    this.setupEventListeners();
+  }
+
+  _createClass(Main, [{
+    key: "setupEventListeners",
+    value: function setupEventListeners() {
+      var buttonEl = document.querySelector('[name="search"]');
+      buttonEl.addEventListener("click", this.handleSearch);
+      var bodyEl = document.querySelector("body");
+      bodyEl.addEventListener("got-results", this.handleResults);
+      bodyEl.addEventListener("got-error", this.handleSearchError);
+    }
+  }, {
+    key: "handleResults",
+    value: function handleResults(results) {
+      var resultsUl = document.querySelector(".results");
+
+      for (var result in results.detail) {
+        var resultLi = document.createElement("li");
+        resultsUl.appendChild(resultLi);
+        var imgEl = document.createElement("img");
+        resultLi.appendChild(imgEl);
+
+        for (var img in results.detail[result].multimedia) {
+          imgEl.setAttribute("src", "https://www.nytimes.com" + results.detail[result].multimedia[img].url);
+        }
+
+        var articles = document.createElement("div");
+        articles.setAttribute("class", "articles-div");
+        resultLi.appendChild(articles);
+        var articleInfo = document.createElement("div");
+        articleInfo.setAttribute("class", "article-info");
+        articles.appendChild(articleInfo);
+        var sectionEl = document.querySelector("span");
+        articleInfo.appendChild(sectionEl);
+        sectionEl.textContent = results.detail[result].section_name;
+        var linkEl = document.createElement("a");
+        articleInfo.appendChild(linkEl);
+        var titleEl = document.createElement("h2");
+        linkEl.appendChild(titleEl);
+        linkEl.setAttribute("href", results.detail[result].web_url);
+        linkEl.setAttribute("target", "_blank");
+        titleEl.textContent = results.detail[result].headline.main;
+        var abstractEl = document.createElement("p");
+        articleInfo.appendChild(abstractEl);
+        abstractEl.textContent = results.detail[result].snippet;
+        var bylineInfoDiv = document.querySelector("div");
+        bylineInfoDiv.setAttribute("class", "byline-info");
+        articles.appendChild(bylineDiv);
+        var bylineEl = document.createElement("span");
+        bylineInfoDiv.appendChild(bylineEl);
+
+        if (results.detail[r].byline.original === null) {
+          bylineEl.textContent === "Staff";
+        } else {
+          bylineEl.textContent = results.detail[result].byline.original + " ";
+        }
+
+        var dateEl = document.createElement("span");
+        bylineInfoDiv.appendChild(dateEl);
+        new Date(results.detail[result].pub_date.slice(0, 19));
+        dateEl.textContent = new Date(results.detail[result].pub_date).toDateString();
+      }
+    }
+  }, {
+    key: "handleSearchError",
+    value: function handleSearchError(error) {}
+  }]);
+
+  return Main;
+}();
+
+new Main();
 //# sourceMappingURL=main.js.map

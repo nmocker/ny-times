@@ -114,19 +114,20 @@ var Main = /*#__PURE__*/function () {
         var article = results[result];
         var resultLi = document.createElement("li");
         resultsUl.appendChild(resultLi);
-        var imgEl = document.createElement("div");
-        imgEl.classList.add("photo");
-
-        if (article.multimedia.length > 0) {
-          imgEl.style.backgroundImage = "url(https://www.nytimes.com/".concat(article.multimedia[0].url, ")");
-        }
-
         var articles = document.createElement("div");
         articles.setAttribute("class", "articles-div");
         resultLi.appendChild(articles);
         var articleInfo = document.createElement("div");
         articleInfo.setAttribute("class", "article-info");
         articles.appendChild(articleInfo);
+        var imgEl = document.createElement("div");
+        imgEl.classList.add("photo");
+        resultLi.appendChild(imgEl);
+
+        if (article.multimedia.length > 0) {
+          imgEl.style.backgroundImage = "url(https://www.nytimes.com/".concat(article.multimedia[0].url, ")");
+        }
+
         var sectionEl = document.createElement("span");
         articleInfo.appendChild(sectionEl);
         sectionEl.textContent = article.section_name;
@@ -142,7 +143,7 @@ var Main = /*#__PURE__*/function () {
         abstractEl.textContent = article.snippet;
         var bylineInfoDiv = document.createElement("div");
         bylineInfoDiv.setAttribute("class", "byline-info");
-        articles.appendChild(bylineInfoDiv);
+        articleInfo.appendChild(bylineInfoDiv);
         var bylineEl = document.createElement("span");
         bylineInfoDiv.appendChild(bylineEl);
 

@@ -96,11 +96,7 @@ class Main {
       const resultLi = document.createElement("li");
       resultsUl.appendChild(resultLi);
 
-      const imgEl = document.createElement("div");
-      imgEl.classList.add("photo");
-      if (article.multimedia.length > 0) {
-        imgEl.style.backgroundImage = `url(https://www.nytimes.com/${article.multimedia[0].url})`;
-      }
+      
 
       const articles = document.createElement("div");
       articles.setAttribute("class", "articles-div");
@@ -109,6 +105,13 @@ class Main {
       const articleInfo = document.createElement("div");
       articleInfo.setAttribute("class", "article-info");
       articles.appendChild(articleInfo);
+
+      const imgEl = document.createElement("div");
+      imgEl.classList.add("photo");
+      resultLi.appendChild(imgEl)
+      if (article.multimedia.length > 0) {
+        imgEl.style.backgroundImage = `url(https://www.nytimes.com/${article.multimedia[0].url})`;
+      }
 
       const sectionEl = document.createElement("span");
       articleInfo.appendChild(sectionEl);
@@ -128,7 +131,7 @@ class Main {
 
       const bylineInfoDiv = document.createElement("div");
       bylineInfoDiv.setAttribute("class", "byline-info");
-      articles.appendChild(bylineInfoDiv);
+      articleInfo.appendChild(bylineInfoDiv);
 
       const bylineEl = document.createElement("span");
       bylineInfoDiv.appendChild(bylineEl);

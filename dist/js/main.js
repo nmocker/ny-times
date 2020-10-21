@@ -32,7 +32,7 @@ var Main = /*#__PURE__*/function () {
 
       var testDate = new Date(year, parseInt(matched[1]) - 1, matched[2]);
 
-      if (testDate == nuull) {
+      if (testDate == null) {
         return null;
       }
 
@@ -100,17 +100,25 @@ var Main = /*#__PURE__*/function () {
     }
   }, {
     key: "handleResults",
-    value: function handleResults(results) {
+    value: function handleResults(event) {
       var resultsUl = document.querySelector(".results");
+      resultsUl.innerHTML = "";
+      var results = event.detail;
 
-      for (var result in results.detail) {
+      if (!results || results.length === 0) {
+        results.textContent = "Womp womp...";
+        return;
+      }
+
+      for (var result in results) {
+        var article = results[result];
         var resultLi = document.createElement("li");
         resultsUl.appendChild(resultLi);
-        var imgEl = document.createElement("img");
-        resultLi.appendChild(imgEl);
+        var imgEl = document.createElement("div");
+        imgEl.classList.add("photo");
 
-        for (var img in results.detail[result].multimedia) {
-          imgEl.setAttribute("src", "https://www.nytimes.com" + results.detail[result].multimedia[img].url);
+        if (article.multimedia.length > 0) {
+          imgEl.style.backgroundImage = "url(https://www.nytimes.com/".concat(article.multimedia[0].url, ")");
         }
 
         var articles = document.createElement("div");
@@ -119,35 +127,36 @@ var Main = /*#__PURE__*/function () {
         var articleInfo = document.createElement("div");
         articleInfo.setAttribute("class", "article-info");
         articles.appendChild(articleInfo);
-        var sectionEl = document.querySelector("span");
+        var sectionEl = document.createElement("span");
         articleInfo.appendChild(sectionEl);
-        sectionEl.textContent = results.detail[result].section_name;
+        sectionEl.textContent = article.section_name;
         var linkEl = document.createElement("a");
         articleInfo.appendChild(linkEl);
         var titleEl = document.createElement("h2");
         linkEl.appendChild(titleEl);
-        linkEl.setAttribute("href", results.detail[result].web_url);
+        linkEl.setAttribute("href", article.web_url);
         linkEl.setAttribute("target", "_blank");
-        titleEl.textContent = results.detail[result].headline.main;
+        titleEl.textContent = article.headline.main;
         var abstractEl = document.createElement("p");
         articleInfo.appendChild(abstractEl);
-        abstractEl.textContent = results.detail[result].snippet;
-        var bylineInfoDiv = document.querySelector("div");
+        abstractEl.textContent = article.snippet;
+        var bylineInfoDiv = document.createElement("div");
         bylineInfoDiv.setAttribute("class", "byline-info");
-        articles.appendChild(bylineDiv);
+        articles.appendChild(bylineInfoDiv);
         var bylineEl = document.createElement("span");
         bylineInfoDiv.appendChild(bylineEl);
 
-        if (results.detail[r].byline.original === null) {
+        if (article.byline.original === null) {
           bylineEl.textContent === "Staff";
         } else {
-          bylineEl.textContent = results.detail[result].byline.original + " ";
+          bylineEl.textContent = article.byline.original + " ";
         }
 
         var dateEl = document.createElement("span");
         bylineInfoDiv.appendChild(dateEl);
-        new Date(results.detail[result].pub_date.slice(0, 19));
-        dateEl.textContent = new Date(results.detail[result].pub_date).toDateString();
+        dateEl.classList.add("date");
+        new Date(article.pub_date.slice(0, 19));
+        dateEl.textContent = new Date(article.pub_date).toDateString();
       }
     }
   }, {

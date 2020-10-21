@@ -4,6 +4,17 @@
 
 body {
   background: #fff;
+  color: #333;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  img {
+    width: 50%;
+  }
 }
 
 form {
@@ -11,6 +22,27 @@ form {
 
   .baseForm {
     margin-bottom: 1rem;
+
+    input {
+      width: 170px;
+    }
+
+    button {
+      text-transform: uppercase;
+      background-color: #587c94;
+      border: 1px solid #356990;
+      border-radius: 2px;
+      color: #fff;
+
+      padding: 3px;
+
+      outline: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #326891;
+      }
+    }
   }
 
   .dateFields {
@@ -21,4 +53,64 @@ form {
 }
 
 .results {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+
+  width: 75%;
+
+  li {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .photo {
+    background-repeat: no-repeat;
+    background-position: right;
+    width: 100%;
+  }
+
+  .articles-div {
+    span {
+      margin-bottom: 0;
+    }
+  }
+
+  .article-info {
+    span {
+      font-family: helvetica, arial, sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    p {
+      font-size: 15px;
+      color: #333;
+    }
+  }
+
+  h2 {
+    color: #000;
+    font-family: georgia, "times new roman", times, serif;
+    font-weight: 500;
+  }
+
+  .byline-info {
+    display: flex;
+    flex-direction: column;
+    font-family: georgia, "times new roman", times, serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #121212;
+    margin-bottom: 20px;
+
+    .date {
+      font-weight: bold;
+    }
+  }
 }

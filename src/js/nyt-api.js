@@ -17,9 +17,10 @@ class NytApi {
 
   handleResponse(response) {
     // pass results back to main.js via custom event
-    const value = response.data.response.docs;
 
-    const event = new CustomEvent("got-results", { detail: value });
+    const event = new CustomEvent("got-results", {
+      detail: response.data.response.docs,
+    });
     document.querySelector("body").dispatchEvent(event);
   }
 

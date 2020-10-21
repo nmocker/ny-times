@@ -36,9 +36,8 @@ var NytApi = /*#__PURE__*/function () {
     key: "handleResponse",
     value: function handleResponse(response) {
       // pass results back to main.js via custom event
-      var value = response.data.response.docs;
       var event = new CustomEvent("got-results", {
-        detail: value
+        detail: response.data.response.docs
       });
       document.querySelector("body").dispatchEvent(event);
     }

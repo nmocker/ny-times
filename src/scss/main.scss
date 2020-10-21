@@ -65,12 +65,13 @@ form {
     a {
       text-decoration: none;
     }
-  }
 
-  .photo {
-    background-repeat: no-repeat;
-    background-position: right;
-    width: 100%;
+    .photo {
+      background-position: right;
+      background-size: contain;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .articles-div {
